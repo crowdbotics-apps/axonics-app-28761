@@ -60,6 +60,7 @@ This section will show any installed modules you add from the Storyboard Modules
 - [react-native-user-profile](modules/user-profile)
 - [react-native-articles](modules/articles)
 - [privacy-policy]()
+- [react-native-privacy-policy](modules/privacy-policy)
 
 # Getting started: Frontend
 
