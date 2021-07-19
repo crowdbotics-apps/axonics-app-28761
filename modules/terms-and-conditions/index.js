@@ -1,10 +1,23 @@
-import Icon from 'react-native-vector-icons/FontAwesome';
-import React from 'react';
-import { Text, View, ScrollView, TouchableOpacity } from 'react-native';
-import { htmlContent } from './content';
+import React, { useEffect, useState } from 'react';
+import { Text, View, ScrollView, TouchableOpacity, useWindowDimensions } from 'react-native';
 import { styles } from './styles';
+import HTML from "react-native-render-html";
+
 
 const TermsAndConditions = ({ navigation }) => {
+
+  const contentWidth = useWindowDimensions().width;
+  const [htmlContent, setHtmlContent] = useState('<h1> No Terms and Conditions Loaded </h1>');
+  
+  useEffect(() => {
+    //change the root url below to your project's url. 
+    fetch('https://<APP_URL_HERE>.botics.co/modules/terms/termsandconditions/')
+      .then(response => response.json())
+      .then(data => setHtmlContent(data[0]['body']))
+      .catch(err => alert("Terms and Conditions could not be loaded at this time."));
+  });
+
+
   return (
     <View
       style={{
@@ -12,23 +25,15 @@ const TermsAndConditions = ({ navigation }) => {
       }}>
       <View style={styles.heading}>
         <TouchableOpacity
-          style={{ padding: 5 }}
+          style={ styles.touchableopacity}
           onPress={() => {
             navigation.goBack();
           }}>
-          <Icon
-            style={styles.icon}
-            name={'arrow-left'}
-            size={18}
-            color="#FFFFFF"
-          />
         </TouchableOpacity>
         <Text style={styles.header}>TERMS AND CONDITIONS</Text>
-        <View></View>
       </View>
-
-      <ScrollView style={styles.scrollview}>
-        <Text style={styles.text}>{htmlContent}</Text>
+      <ScrollView style={{ flex: 1 }}>
+        <HTML source={{ html: htmlContent }} contentWidth={contentWidth} />
       </ScrollView>
     </View>
   );
